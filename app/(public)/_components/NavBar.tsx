@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/Logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/popover";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Logo from "./Logo";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
