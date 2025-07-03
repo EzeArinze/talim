@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/popover";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Logo from "./Logo";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -27,7 +28,7 @@ export function NavBar() {
   const pathname = usePathname();
 
   return (
-    <section className="sticky top-1 z-50 flex h-16 items-center justify-between gap-4 max-w-[90%] mx-auto">
+    <section className="sticky top-1 z-50 flex h-16 items-center justify-between gap-4 max-w-[90%] mx-auto backdrop-blur-md border border-b border-border rounded-xl shadow-md p-2">
       {/* Left side */}
       <div className="flex items-center gap-2">
         {/* Mobile menu trigger */}
@@ -88,12 +89,8 @@ export function NavBar() {
         </Popover>
         {/* Main nav */}
         <div className="flex items-center gap-6">
-          <Link
-            href="#"
-            className="text-primary hover:text-primary/90 font-extrabold text-2xl tracking-tight select-none flex items-center gap-1"
-          >
-            Talim
-            <span className="inline-block size-3 bg-primary rounded-full align-middle shadow-md" />
+          <Link href="#">
+            <Logo />
           </Link>
           {/* Navigation menu */}
           <NavigationMenu className="max-md:hidden">

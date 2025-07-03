@@ -24,7 +24,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NavBar />
-          <main>{children}</main>
+          <main className="max-w-[90%] mx-auto">{children}</main>
         </ThemeProvider>
       </body>
     </html>
