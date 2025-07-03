@@ -1,33 +1,32 @@
 import React from "react";
 import { Card } from "../ui/card";
-import { Book, BookA } from "lucide-react";
 
 const heroCard = [
   {
     title: "Courses",
     description: "Comprehensive courses",
-    logo: <BookA />,
+    logo: "📚",
   },
   {
-    title: "Courses",
-    description: "Comprehensive courses",
-    logo: <Book />,
+    title: "Interactive Learning",
+    description: "Engaging interactive lessons",
+    logo: "🎮",
   },
   {
-    title: "Courses",
-    description: "Comprehensive courses",
-    logo: <Book />,
+    title: "Community Support",
+    description: "Join our vibrant community",
+    logo: "🤝",
   },
   {
-    title: "Courses",
-    description: "Comprehensive courses",
-    logo: <Book />,
+    title: "Resources",
+    description: "Access a wealth of resources",
+    logo: "📖",
   },
 ];
 
 function HeroCard() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mb-4 pt-6 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mb-4 pt-8 w-full">
       {heroCard.map((card, index) => (
         <Card
           key={index}

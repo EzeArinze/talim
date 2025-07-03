@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { NavBar } from "./(public)/_components/NavBar";
+import Footer from "@/components/hero/Footer";
 
 export const metadata: Metadata = {
   title: "Talim",
@@ -25,6 +26,7 @@ export default function RootLayout({
         >
           <NavBar />
           <main className="max-w-[90%] mx-auto">{children}</main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
