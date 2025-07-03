@@ -35,7 +35,7 @@ function Testimonial() {
               </p>
               <div className="flex items-center space-x-3">
                 <Image
-                  src="/placeholder.svg?height=40&width=40"
+                  src="/placeholder.jpeg"
                   alt="Sarah Johnson"
                   width={40}
                   height={40}
@@ -65,7 +65,7 @@ function Testimonial() {
               </p>
               <div className="flex items-center space-x-3">
                 <Image
-                  src="/placeholder.svg?height=40&width=40"
+                  src="/placeholder.jpeg"
                   alt="Michael Chen"
                   width={40}
                   height={40}
@@ -95,7 +95,7 @@ function Testimonial() {
               </p>
               <div className="flex items-center space-x-3">
                 <Image
-                  src="/placeholder.svg?height=40&width=40"
+                  src="/placeholder.jpeg"
                   alt="Emily Rodriguez"
                   width={40}
                   height={40}
