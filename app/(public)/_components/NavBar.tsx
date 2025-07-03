@@ -1,5 +1,7 @@
+"use client";
+
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,18 +14,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home", active: true },
-  { href: "#", label: "Features" },
-  { href: "#", label: "Pricing" },
-  { href: "#", label: "About" },
+  { href: "/", label: "Home" },
+  { href: "#", label: "courses" },
+  { href: "#", label: "Dashboard" },
 ];
 
 export function NavBar() {
+  const pathname = usePathname();
+
   return (
-    <section className="flex h-16 items-center justify-between gap-4">
+    <section className="sticky top-1 z-50 flex h-16 items-center justify-between gap-4 max-w-[90%] mx-auto">
       {/* Left side */}
       <div className="flex items-center gap-2">
         {/* Mobile menu trigger */}
@@ -68,8 +72,11 @@ export function NavBar() {
                   <NavigationMenuItem key={index} className="w-full">
                     <NavigationMenuLink
                       href={link.href}
-                      className="py-1.5"
-                      active={link.active}
+                      className={`${
+                        pathname === link.href
+                          ? "focus:bg-accent hover:bg-accent bg-accent/50 text-accent-foreground"
+                          : ""
+                      }  py-1.5`}
                     >
                       {link.label}
                     </NavigationMenuLink>
@@ -81,21 +88,28 @@ export function NavBar() {
         </Popover>
         {/* Main nav */}
         <div className="flex items-center gap-6">
-          <Link href="#" className="text-primary hover:text-primary/90">
-            <span className="">Talim</span>
+          <Link
+            href="#"
+            className="text-primary hover:text-primary/90 font-extrabold text-2xl tracking-tight select-none flex items-center gap-1"
+          >
+            Talim
+            <span className="inline-block size-3 bg-primary rounded-full align-middle shadow-md" />
           </Link>
           {/* Navigation menu */}
           <NavigationMenu className="max-md:hidden">
             <NavigationMenuList className="gap-2">
               {navigationLinks.map((link, index) => (
                 <NavigationMenuItem key={index}>
-                  <NavigationMenuLink
-                    active={link.active}
+                  <Link
                     href={link.href}
-                    className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                    className={`${
+                      pathname === link.href
+                        ? "focus:bg-accent hover:bg-accent bg-accent/50 text-accent-foreground"
+                        : ""
+                    } text-muted-foreground hover:text-primary py-1.5 font-medium text-sm p-1`}
                   >
                     {link.label}
-                  </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -103,19 +117,14 @@ export function NavBar() {
         </div>
       </div>
       {/* Right side */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         <ThemeToggle />
-        <Link
-          href="#"
-          className={buttonVariants({ variant: "ghost", size: "sm" })}
-        >
-          Sign In
-        </Link>
-
-        <Link href="#" className={(buttonVariants({ size: "sm" }), "text-sm")}>
-          Get Started
-        </Link>
+        <Button variant="link" size="sm" asChild>
+          <Link href="#">Sign In</Link>
+        </Button>
       </div>
     </section>
   );
 }
+
+// data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground
