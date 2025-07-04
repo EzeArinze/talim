@@ -9,21 +9,31 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
+
+import {
+  useState,
+  // useTransition
+} from "react";
 import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { toast } from "sonner";
+import useSmartForm from "use-smart-form";
+import { schema } from "@/utils/zod-shcemas/SignInSchema";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [signInLoading, setSignInLoading] = useState(false);
+  // const [loading, startTransition] = useTransition()
+  const { Form, Field } = useSmartForm({
+    schema,
+    onSubmit: async (data) => {
+      await handleSignIn(data.email);
+    },
+  });
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (email: string) => {
     await signIn.magicLink(
       {
         email,
@@ -81,30 +91,16 @@ export default function SignIn() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-            <Button
-              disabled={loading || signInLoading}
-              className="gap-2"
-              onClick={handleSignIn}
-            >
+          <Form className="grid gap-2">
+            <Field name="email" type="email" placeholder="Email address" />
+            <Button disabled={loading || signInLoading} className="gap-2">
               {signInLoading ? (
                 <Loader2 size={16} className="animate-spin" />
               ) : (
                 " Sign-in with Email"
               )}
             </Button>
-          </div>
+          </Form>
 
           <div className="relative text-center text-sm after:absolute after:inset-0 after:z-0 after:top-1/2 after:flex after:w-full after:items-center after:border-t after:border-text-muted-foreground">
             <span className="relative z-10 bg-card px-2 text-muted-foreground">
