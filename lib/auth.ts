@@ -23,14 +23,13 @@ export const auth = betterAuth({
   },
   plugins: [
     magicLink({
-      sendMagicLink: async ({ email, token, url }) => {
+      sendMagicLink: async ({ email, url }) => {
         await resend.emails.send({
           from: "Talim <onboarding@resend.dev>",
           to: [email],
           subject: `Hello ${email}, sign in to Talim`,
           html: `<p>Click the link below to sign in:</p><a href="${url}">Sign in</a>`,
         });
-        console.log(`Sending magic link to ${email} with token ${token}`);
       },
     }),
     nextCookies(),

@@ -41,10 +41,10 @@ export default function SignIn() {
           onRequest: () => {
             setSignInLoading(true);
           },
-          onSuccess: (ctx) => {
+          onResponse: () => {
             setSignInLoading(false);
             toast.success("Check your email for the magic link!", {
-              description: `We have sent a magic link to ${ctx.data?.user.email}.`,
+              description: `We have sent a magic link to your email.`,
             });
           },
           onError: (error) => {

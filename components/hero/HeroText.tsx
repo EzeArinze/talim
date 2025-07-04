@@ -21,7 +21,10 @@ function HeroText() {
         <Link href={"#"} className={buttonVariants({ variant: "default" })}>
           Explore Courses
         </Link>
-        <Link href={"#"} className={buttonVariants({ variant: "outline" })}>
+        <Link
+          href={"/sign-in"}
+          className={buttonVariants({ variant: "outline" })}
+        >
           Sign in
         </Link>
       </div>
