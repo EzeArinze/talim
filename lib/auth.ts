@@ -19,7 +19,7 @@ export const auth = betterAuth({
   },
   rateLimit: {
     window: 60, // time window in seconds
-    max: 10, // max requests in the window
+    max: 20, // max requests in the window
   },
   plugins: [
     magicLink({

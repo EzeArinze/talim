@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/popover";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ProfileDropDown from "./ProfileDropDown";
+import { useClientSession } from "@/hooks/useSession";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -26,6 +28,8 @@ const navigationLinks = [
 
 export function NavBar() {
   const pathname = usePathname();
+  const { initials, picture, name, email, session, isPending } =
+    useClientSession();
 
   return (
     <section className="sticky top-1 z-50 flex h-16 items-center justify-between gap-4 max-w-[90%] mx-auto backdrop-blur-md border border-b border-border rounded-xl shadow-md p-2">
@@ -89,7 +93,7 @@ export function NavBar() {
         </Popover>
         {/* Main nav */}
         <div className="flex items-center gap-6">
-          <Link href="#">
+          <Link href="/">
             <Logo />
           </Link>
           {/* Navigation menu */}
@@ -116,12 +120,24 @@ export function NavBar() {
       {/* Right side */}
       <div className="flex items-center gap-1.5">
         <ThemeToggle />
-        <Button variant="link" size="sm" asChild>
-          <Link href="/sign-in">Sign In</Link>
-        </Button>
+        {isPending ? (
+          <div className="flex items-center gap-2 animate-pulse">
+            <div className="h-8 w-8 rounded-full bg-muted" />
+            <div className="h-4 w-20 rounded bg-muted" />
+          </div>
+        ) : !session ? (
+          <Button variant="link" size="sm" asChild>
+            <Link href="/sign-in">Sign In</Link>
+          </Button>
+        ) : (
+          <ProfileDropDown
+            initials={initials}
+            name={name}
+            email={email}
+            picture={picture ?? undefined}
+          />
+        )}
       </div>
     </section>
   );
 }
-
-// data-[active=true]:focus:bg-accent data-[active=true]:hover:bg-accent data-[active=true]:bg-accent/50 data-[active=true]:text-accent-foreground
