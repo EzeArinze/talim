@@ -117,7 +117,7 @@ export function NavBar() {
       <div className="flex items-center gap-1.5">
         <ThemeToggle />
         <Button variant="link" size="sm" asChild>
-          <Link href="#">Sign In</Link>
+          <Link href="/sign-in">Sign In</Link>
         </Button>
       </div>
     </section>
