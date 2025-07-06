@@ -22,7 +22,7 @@ import { useClientSession } from "@/hooks/useSession";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home" },
-  { href: "#", label: "courses" },
+  { href: "#", label: "Courses" },
   { href: "#", label: "Dashboard" },
 ];
 
