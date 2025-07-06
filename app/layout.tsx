@@ -25,7 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="max-w-[90%] mx-auto">{children}</main>
+          <main className="mx-auto">{children}</main>
         </ThemeProvider>
         <Toaster />
       </body>

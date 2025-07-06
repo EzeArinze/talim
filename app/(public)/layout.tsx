@@ -4,7 +4,7 @@ import Footer from "@/components/hero/Footer";
 import { NavBar } from "./_components/NavBar";
 
 export const metadata: Metadata = {
-  title: "Talim| public",
+  title: "Talim",
   description: "Academic, trustworthy place to learn.",
 };
 
