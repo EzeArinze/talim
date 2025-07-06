@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 // import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Talim",
+  title: "Talim | Sign-in",
   description: "Sign-in",
 };
 
