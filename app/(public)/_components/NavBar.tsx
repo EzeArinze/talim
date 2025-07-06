@@ -134,7 +134,7 @@ export function NavBar() {
             initials={initials}
             name={name}
             email={email}
-            picture={picture ?? undefined}
+            picture={picture}
           />
         )}
       </div>

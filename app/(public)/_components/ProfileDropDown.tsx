@@ -21,7 +21,7 @@ import { signOut } from "@/lib/auth-client";
 
 interface profileProps {
   initials: string;
-  picture?: string;
+  picture?: string | undefined | null;
   name?: string;
   email?: string;
 }
