@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import HeroSection from "./(public)/_components/HeroSection";
+import HeroSection from "./_components/HeroSection";
 
 export default function Home() {
   return (

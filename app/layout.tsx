@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 // import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { NavBar } from "./(public)/_components/NavBar";
-import Footer from "@/components/hero/Footer";
+// import { NavBar } from "./(public)/_components/NavBar";
+// import Footer from "@/components/hero/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
@@ -25,9 +25,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <NavBar />
           <main className="max-w-[90%] mx-auto">{children}</main>
-          <Footer />
         </ThemeProvider>
         <Toaster />
       </body>
