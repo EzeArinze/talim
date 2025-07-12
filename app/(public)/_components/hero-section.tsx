@@ -1,6 +1,6 @@
 import CTA from "@/components/hero/CTA";
-import HeroCard from "@/components/hero/HeroCard";
-import HeroText from "@/components/hero/HeroText";
+import HeroCard from "@/components/hero/hero-card";
+import HeroText from "@/components/hero/hero-text";
 import Testimonial from "@/components/hero/Testimonial";
 
 function HeroSection() {

@@ -1,6 +1,6 @@
 import React from "react";
-import SignIn from "../_components/SignIn";
-import { getServerSession } from "@/hooks/useServerSession";
+import SignIn from "../_components/sign-In";
+import { getServerSession } from "@/hooks/use-server-session";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";

@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/popover";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ProfileDropDown from "./ProfileDropDown";
-import { useClientSession } from "@/hooks/useSession";
+import ProfileDropDown from "./profile-drop-down";
+import { useClientSession } from "@/hooks/use-session";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
+import { NavBar } from "./_components/nav-bar";
 import Footer from "@/components/hero/Footer";
-import { NavBar } from "./_components/NavBar";
 
 export const metadata: Metadata = {
   title: "Talim",
