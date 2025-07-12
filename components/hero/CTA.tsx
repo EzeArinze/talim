@@ -24,7 +24,7 @@ function CTA() {
                 className="bg-secondary/10 border-primary/20 text-accent-foreground placeholder:primary/70 flex-1"
               />
               <Button
-                size="lg"
+                size="default"
                 className="text-secondary hover:bg-muted-foreground px-8"
               >
                 Start Today
