@@ -6,9 +6,9 @@ export const useClientSession = () => {
   const initials =
     session?.user.email?.split("@")[0]?.slice(0, 1).toUpperCase() || "K";
 
-  const picture = session?.user.image;
-  const name = session?.user.name;
-  const email = session?.user.email;
+  const email = session?.user.email || "@example.com";
+  const picture = session?.user.image || `https://avatar.vercel.sh/${email}`;
+  const name = session?.user.name || "johndoe";
 
   return { session, isPending, initials, picture, name, email };
 };

@@ -12,7 +12,6 @@ import {
   IconUsers,
 } from "@tabler/icons-react";
 
-// import { NavDocuments } from "@/components/admin-dashboard/nav-documents";
 import { NavMain } from "@/components/admin-dashboard/nav-main";
 import { NavSecondary } from "@/components/admin-dashboard/nav-secondary";
 import { NavUser } from "@/components/admin-dashboard/nav-user";
@@ -37,7 +36,7 @@ const data = {
     },
     {
       title: "Courses",
-      url: "#",
+      url: "/courses",
       icon: IconListDetails,
     },
     {
@@ -87,8 +86,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="#">
-                {/* <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span> */}
                 <Logo />
               </Link>
             </SidebarMenuButton>
@@ -97,7 +94,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        {/* <NavDocuments items={data.documents} /> */}
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
