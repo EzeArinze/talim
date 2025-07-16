@@ -31,12 +31,12 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/admin",
       icon: IconDashboard,
     },
     {
       title: "Courses",
-      url: "/courses",
+      url: "/admin/courses",
       icon: IconListDetails,
     },
     {
