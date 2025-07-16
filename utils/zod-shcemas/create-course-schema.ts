@@ -1,0 +1,44 @@
+import { z } from "zod";
+
+// Assuming these are your enums
+const courseLevel = z.enum(["beginner", "intermediate", "advanced"], {
+  message: "Please select a valid course level.",
+});
+
+const courseStatus = z.enum(["draft", "published", "archived"], {
+  message: "Please select a valid course status.",
+});
+
+export const courseFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, { message: "Course name must be at least 2 characters long." })
+    .max(100, { message: "Course name must not exceed 100 characters." }),
+  description: z
+    .string()
+    .min(3, { message: "Description must be at least 3 characters long." }),
+  small_description: z
+    .string()
+    .min(3, {
+      message: "Short description must be at least 3 characters long.",
+    })
+    .max(200, { message: "Short description must not exceed 200 characters." }),
+  duration: z.coerce
+    .number()
+    .min(1, { message: "Duration must be at least 1 hour." })
+    .max(500, { message: "Duration must not exceed 500 hours." }),
+  price: z.coerce
+    .number()
+    .min(1, { message: "Price must be a positive number and at least 1." }),
+  slug: z
+    .string()
+    .min(3, { message: "Slug must be at least 3 characters long." }),
+  file_key: z.string().min(1, { message: "File key is required." }),
+  category: z.string().min(1, { message: "Please select a category." }),
+  level: courseLevel,
+  status: courseStatus,
+});
+
+export type courseStatusType = z.infer<typeof courseStatus>;
+export type courseLevelType = z.infer<typeof courseLevel>;
+export type courseZodType = z.infer<typeof courseFormSchema>;
