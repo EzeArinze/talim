@@ -6,11 +6,12 @@
 
 // const client = neon(process.env.DATABASE_URL!);
 // export const db = drizzle({ client: client });
-import "dotenv/config";
+// import "dotenv/config";
 import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
+import { config } from "dotenv";
 
-// config({ path: ".env.local" });
+config({ path: ".env.local" });
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
