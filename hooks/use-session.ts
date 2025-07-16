@@ -1,4 +1,5 @@
-import { useSession } from "@/lib/auth-client";
+import { signOut, useSession } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 export const useClientSession = () => {
   const { data: session, isPending } = useSession();
@@ -20,3 +21,17 @@ export const useClientSession = () => {
 //         .join("")
 //         .toUpperCase()
 //     :
+
+export const handleSignOut = async () => {
+  await signOut({
+    fetchOptions: {
+      onSuccess: () => {
+        toast.success("Successfully signed out");
+        window.location.href = "/";
+      },
+      onError: () => {
+        toast.error("failed to signOut");
+      },
+    },
+  });
+};

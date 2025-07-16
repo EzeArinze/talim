@@ -24,9 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useClientSession } from "@/hooks/use-session";
-import { signOut } from "@/lib/auth-client";
-import { toast } from "sonner";
+import { handleSignOut, useClientSession } from "@/hooks/use-session";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -108,18 +106,7 @@ export function NavUser() {
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  signOut({
-                    fetchOptions: {
-                      onSuccess: () => {
-                        toast.success("Successfully signed out");
-                        window.location.href = "/";
-                      },
-                    },
-                  })
-                }
-              >
+              <DropdownMenuItem onClick={handleSignOut}>
                 <IconLogout />
                 Log out
               </DropdownMenuItem>
