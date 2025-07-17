@@ -8,20 +8,20 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 
 import {
+  courseCategories,
   courseFormSchema,
+  courseLevel,
+  courseStatus,
   courseZodType,
 } from "@/utils/zod-shcemas/create-course-schema";
 
@@ -30,6 +30,10 @@ import { useForm } from "react-hook-form";
 import { SparkleIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { SelectField } from "./select-field";
+
 export function CreateCourseForm() {
   const form = useForm<courseZodType>({
     resolver: zodResolver(courseFormSchema),
@@ -37,7 +41,7 @@ export function CreateCourseForm() {
       name: "",
       description: "",
       small_description: "",
-      category: "",
+      category: "Health & Fitness",
       duration: 0,
       price: 0,
       file_key: "",
@@ -156,15 +160,65 @@ export function CreateCourseForm() {
                 <FormItem className="w-full">
                   <FormLabel>Thumbnail image</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Thumbnail url"
-                      {...field}
-                      className=""
-                    />
+                    <Input placeholder="Thumbnail url" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <SelectField
+                control={form.control}
+                name="category"
+                label="Categories"
+                placeholder="Select Category"
+                options={courseCategories}
+              />
+
+              <SelectField
+                control={form.control}
+                name="level"
+                label="Level"
+                placeholder="Select Level"
+                options={courseLevel}
+              />
+
+              <FormField
+                control={form.control}
+                name="duration"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Duration (hours)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Duration" type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormLabel>Pice ($)</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Price" type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <SelectField
+              control={form.control}
+              name="status"
+              label="Status"
+              placeholder="Select Status"
+              options={courseStatus}
             />
             <Button type="submit">Submit</Button>
           </form>

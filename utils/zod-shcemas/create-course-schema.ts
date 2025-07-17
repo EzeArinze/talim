@@ -1,13 +1,31 @@
 import { z } from "zod";
 
 // Assuming these are your enums
-const courseLevel = z.enum(["beginner", "intermediate", "advanced"], {
-  message: "Please select a valid course level.",
-});
+// const courseLevel = z.enum(["beginner", "intermediate", "advanced"], {
+//   message: "Please select a valid course level.",
+// });
 
-const courseStatus = z.enum(["draft", "published", "archived"], {
-  message: "Please select a valid course status.",
-});
+export const courseLevel = ["beginner", "intermediate", "advanced"] as const;
+
+// const courseStatus = z.enum(["draft", "published", "archived"], {
+//   message: "Please select a valid course status.",
+// });
+
+export const courseStatus = ["draft", "published", "archived"] as const;
+
+export const courseCategories = [
+  "Health & Fitness",
+  "Developer",
+  "Designer",
+  "Business",
+  "Finance",
+  "IT & Software",
+  "Office Productivity",
+  "Personal Development",
+  "Marketing",
+  "Music",
+  "Teaching & Academics",
+] as const;
 
 export const courseFormSchema = z.object({
   name: z
@@ -34,11 +52,17 @@ export const courseFormSchema = z.object({
     .string()
     .min(3, { message: "Slug must be at least 3 characters long." }),
   file_key: z.string().min(1, { message: "File key is required." }),
-  category: z.string().min(1, { message: "Please select a category." }),
-  level: courseLevel,
-  status: courseStatus,
+  category: z.enum(courseCategories, { message: "Please select a category." }),
+  level: z.enum(courseLevel, {
+    message: "Please select a valid course level.",
+  }),
+  status: z.enum(courseStatus, {
+    message: "Please select a valid course status.",
+  }),
 });
 
-export type courseStatusType = z.infer<typeof courseStatus>;
-export type courseLevelType = z.infer<typeof courseLevel>;
 export type courseZodType = z.infer<typeof courseFormSchema>;
+
+export type courseStatusType = typeof courseStatus;
+export type courseLevelType = typeof courseLevel;
+export type courseCategories = typeof courseCategories;
