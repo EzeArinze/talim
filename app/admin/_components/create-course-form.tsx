@@ -27,12 +27,13 @@ import {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { SparkleIcon } from "lucide-react";
+import { PlusIcon, SparkleIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SelectField } from "./select-field";
+import { SelectField } from "../../../components/select-field";
+import RichTextEditor from "@/components/rich-text-editor/Editor";
 
 export function CreateCourseForm() {
   const form = useForm<courseZodType>({
@@ -41,7 +42,7 @@ export function CreateCourseForm() {
       name: "",
       description: "",
       small_description: "",
-      category: "Health & Fitness",
+      category: "health & fitness",
       duration: 0,
       price: 0,
       file_key: "",
@@ -141,12 +142,13 @@ export function CreateCourseForm() {
                 <FormItem className="w-full">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
+                    {/* <Textarea
                       placeholder="Description"
                       {...field}
                       className="min-h-[110px]"
                       rows={2}
-                    />
+                    /> */}
+                    <RichTextEditor />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -203,7 +205,7 @@ export function CreateCourseForm() {
                 name="price"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel>Pice ($)</FormLabel>
+                    <FormLabel>Price ($)</FormLabel>
                     <FormControl>
                       <Input placeholder="Price" type="number" {...field} />
                     </FormControl>
@@ -220,7 +222,9 @@ export function CreateCourseForm() {
               placeholder="Select Status"
               options={courseStatus}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">
+              Create Course <PlusIcon size={16} />{" "}
+            </Button>
           </form>
         </Form>
       </CardContent>

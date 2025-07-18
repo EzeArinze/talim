@@ -14,17 +14,17 @@ export const courseLevel = ["beginner", "intermediate", "advanced"] as const;
 export const courseStatus = ["draft", "published", "archived"] as const;
 
 export const courseCategories = [
-  "Health & Fitness",
-  "Developer",
-  "Designer",
-  "Business",
-  "Finance",
-  "IT & Software",
-  "Office Productivity",
-  "Personal Development",
-  "Marketing",
-  "Music",
-  "Teaching & Academics",
+  "health & fitness",
+  "developer",
+  "designer",
+  "business",
+  "finance",
+  "IT & software",
+  "office productivity",
+  "personal development",
+  "marketing",
+  "music",
+  "teaching & academics",
 ] as const;
 
 export const courseFormSchema = z.object({

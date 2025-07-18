@@ -43,11 +43,11 @@ export function SelectField<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={className}>
+        <FormItem>
           <FormLabel>{label}</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className={className}>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
@@ -55,7 +55,12 @@ export function SelectField<T extends FieldValues>({
               <SelectGroup>
                 {options.map((option) => (
                   <SelectItem key={option} value={option}>
-                    {option}
+                    {option
+                      .split(" ")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
                   </SelectItem>
                 ))}
               </SelectGroup>
