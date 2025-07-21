@@ -25,7 +25,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import Logo from "../Logo";
+import Logo from "../custom/Logo";
 
 const data = {
   navMain: [

@@ -32,7 +32,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SelectField } from "../../../components/select-field";
+import { SelectField } from "../../../components/custom/select-field";
 import Editor from "@/components/rich-text-editor/Editor";
 
 export function CreateCourseForm() {
