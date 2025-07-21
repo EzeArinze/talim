@@ -1,17 +1,27 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import {
+  useEditor,
+  // EditorContent
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+// import Bold from "@tiptap/extension-bold";
 
-const RichTextEditor = () => {
+import MenuBar from "./menu-bar";
+
+const Editor = () => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: "<p>Hello World! 🌎️</p>",
-    // Don't render immediately on the server to avoid SSR issues
     immediatelyRender: false,
   });
 
-  return <EditorContent editor={editor} />;
+  return (
+    <div>
+      <MenuBar editor={editor} />
+      {/* <EditorContent editor={editor} /> */}
+    </div>
+  );
 };
 
-export default RichTextEditor;
+export default Editor;
