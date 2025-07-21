@@ -7,11 +7,14 @@ import {
 } from "@/components/ui/tooltip";
 import { Toggle } from "@/components/ui/toggle";
 import {
+  AlignLeft,
   Bold,
   Heading1Icon,
   Heading2Icon,
   Heading3Icon,
   Italic,
+  ListIcon,
+  ListOrdered,
   Strikethrough,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -24,9 +27,9 @@ function MenuBar({ editor }: RTEMenuBarProps) {
   if (!editor) return null;
 
   return (
-    <div>
+    <div className="flex flex-wrap items-center gap-1 border-input rounded-t-lg p-2 bg-accent-foreground/10">
       <TooltipProvider>
-        <div>
+        <div className="flex flex-wrap items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
               <Toggle
@@ -145,6 +148,69 @@ function MenuBar({ editor }: RTEMenuBarProps) {
               </Toggle>
             </TooltipTrigger>
             <TooltipContent>H3</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive("bulletList")}
+                onPressedChange={() =>
+                  editor.chain().focus().toggleBulletList().run()
+                }
+                className={cn(
+                  editor.isActive("bulletList")
+                    ? "bg-muted text-muted-foreground"
+                    : ""
+                )}
+              >
+                <ListIcon />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Bullet List</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive("orderedList")}
+                onPressedChange={() =>
+                  editor.chain().focus().toggleOrderedList().run()
+                }
+                className={cn(
+                  editor.isActive("orderedList")
+                    ? "bg-muted text-muted-foreground"
+                    : ""
+                )}
+              >
+                <ListOrdered />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Ordered List</TooltipContent>
+          </Tooltip>
+        </div>
+        <div className="w-px h-6 mx-2 bg-accent-foreground/20" />
+
+        <div className="flex flex-wrap items-center gap-1">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive({ textAlign: "left" })}
+                onPressedChange={() =>
+                  editor.chain().focus().setTextAlign("left").run()
+                }
+                className={cn(
+                  editor.isActive({ textAlign: "left" })
+                    ? "bg-muted text-muted-foreground"
+                    : ""
+                )}
+              >
+                <AlignLeft />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Align Left</TooltipContent>
           </Tooltip>
         </div>
       </TooltipProvider>
