@@ -138,17 +138,11 @@ export function CreateCourseForm() {
             <FormField
               control={form.control}
               name="description"
-              render={({}) => (
+              render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    {/* <Textarea
-                      placeholder="Description"
-                      {...field}
-                      className="min-h-[110px]"
-                      rows={2}
-                    /> */}
-                    <Editor />
+                    <Editor field={field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

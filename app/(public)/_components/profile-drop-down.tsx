@@ -22,7 +22,7 @@ import { handleSignOut } from "@/hooks/use-session";
 
 interface profileProps {
   initials: string;
-  picture?: string | undefined | null;
+  picture?: string;
   name?: string;
   email?: string;
 }
@@ -41,7 +41,7 @@ export default function ProfileDropDown({
       >
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent ">
           <Avatar>
-            <AvatarImage src={picture || ""} alt={name || "profile-image"} />
+            <AvatarImage src={picture} alt={name || "profile-image"} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
           <ChevronDownIcon
@@ -51,7 +51,7 @@ export default function ProfileDropDown({
           />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="max-w-64">
+      <DropdownMenuContent className="min-w-48">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="text-foreground truncate text-sm font-medium">
             {name || email?.split("@").at(0)}

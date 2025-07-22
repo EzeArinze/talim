@@ -32,7 +32,7 @@ function MenuBar({ editor }: RTEMenuBarProps) {
   if (!editor) return null;
 
   return (
-    <div className="flex flex-wrap items-center gap-1 border-input rounded-t-lg p-2 bg-accent-foreground/10">
+    <div className="flex flex-wrap items-center gap-1 border border-input border-t-0 border-b-0 rounded-t-lg p-2 bg-background/60">
       <TooltipProvider>
         <div className="flex flex-wrap items-center gap-1">
           <Tooltip>
