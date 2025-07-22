@@ -12,8 +12,8 @@ function CTA() {
             Ready to transform the way you learn ?
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Join over 10,000 students who have already made the switch to
-            EduFlow. Start today and see the difference for yourself.
+            Join over 10,000 students who have already made the switch to Talim.
+            Start today and see the difference for yourself.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

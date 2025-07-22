@@ -10,17 +10,20 @@ export const useClientSession = () => {
   const email = session?.user.email || "@example.com";
   const picture = session?.user.image || `https://avatar.vercel.sh/${email}`;
   const name = session?.user.name || "johndoe";
+  // Fallback for when session is pending
+  // if (isPending && !session) {
+  //   return {
+  //     session: null,
+  //     isPending: true,
+  //     initials: "K",
+  //     picture: `https://avatar.vercel.sh/${email}`,
+  //     name: "johndoe",
+  //     email,
+  //   };
+  // }
 
   return { session, isPending, initials, picture, name, email };
 };
-
-// session?.user.name
-//     ? session.user.name
-//         .split(" ")
-//         .map((n) => n[0])
-//         .join("")
-//         .toUpperCase()
-//     :
 
 export const handleSignOut = async () => {
   await signOut({

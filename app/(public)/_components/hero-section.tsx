@@ -1,7 +1,8 @@
-import CTA from "@/components/hero/cta";
+import CTA from "@/components/hero/CTA";
 import HeroCard from "@/components/hero/hero-card";
 import HeroText from "@/components/hero/hero-text";
-import Testimonial from "@/components/hero/testimonial";
+import Testimonial from "@/components/hero/Testimonial";
+
 
 function HeroSection() {
   return (

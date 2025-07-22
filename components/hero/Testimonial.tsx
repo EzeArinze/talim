@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Card, CardContent } from "../ui/card";
 import { Star } from "lucide-react";
 import { Badge } from "../ui/badge";
@@ -16,7 +15,7 @@ function Testimonial() {
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Join thousands of educators who have transformed their teaching with
-            EduFlow.
+            Talim.
           </p>
         </div>
 
@@ -34,13 +33,6 @@ function Testimonial() {
                 saved me countless hours.&quot;
               </p>
               <div className="flex items-center space-x-3">
-                <Image
-                  src="/placeholder.jpeg"
-                  alt="Sarah Johnson"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
                 <div>
                   <p className="font-semibold text-primary">Sarah Johnson</p>
                   <p className="text-sm text-muted-foreground">
@@ -64,13 +56,6 @@ function Testimonial() {
                 EduFlow.&quot;
               </p>
               <div className="flex items-center space-x-3">
-                <Image
-                  src="/placeholder.jpeg"
-                  alt="Michael Chen"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
                 <div>
                   <p className="font-semibold text-primary">Michael Chen</p>
                   <p className="text-sm text-muted-foreground">
@@ -94,13 +79,6 @@ function Testimonial() {
                 minutes.&quot;
               </p>
               <div className="flex items-center space-x-3">
-                <Image
-                  src="/placeholder.jpeg"
-                  alt="Emily Rodriguez"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
                 <div>
                   <p className="font-semibold text-primary">Emily Rodriguez</p>
                   <p className="text-sm text-muted-foreground">
