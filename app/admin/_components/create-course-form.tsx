@@ -138,7 +138,7 @@ export function CreateCourseForm() {
             <FormField
               control={form.control}
               name="description"
-              render={({ field }) => (
+              render={({}) => (
                 <FormItem className="w-full">
                   <FormLabel>Description</FormLabel>
                   <FormControl>

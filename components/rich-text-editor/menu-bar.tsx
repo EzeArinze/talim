@@ -7,7 +7,9 @@ import {
 } from "@/components/ui/tooltip";
 import { Toggle } from "@/components/ui/toggle";
 import {
+  AlignCenter,
   AlignLeft,
+  AlignRight,
   Bold,
   Heading1Icon,
   Heading2Icon,
@@ -15,9 +17,12 @@ import {
   Italic,
   ListIcon,
   ListOrdered,
+  Redo,
   Strikethrough,
+  Undo,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
 
 interface RTEMenuBarProps {
   editor: Editor | null;
@@ -212,6 +217,79 @@ function MenuBar({ editor }: RTEMenuBarProps) {
             </TooltipTrigger>
             <TooltipContent>Align Left</TooltipContent>
           </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive({ textAlign: "center" })}
+                onPressedChange={() =>
+                  editor.chain().focus().setTextAlign("center").run()
+                }
+                className={cn(
+                  editor.isActive({ textAlign: "center" })
+                    ? "bg-muted text-muted-foreground"
+                    : ""
+                )}
+              >
+                <AlignCenter />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Align Center</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Toggle
+                size="sm"
+                pressed={editor.isActive({ textAlign: "right" })}
+                onPressedChange={() =>
+                  editor.chain().focus().setTextAlign("right").run()
+                }
+                className={cn(
+                  editor.isActive({ textAlign: "right" })
+                    ? "bg-muted text-muted-foreground"
+                    : ""
+                )}
+              >
+                <AlignRight />
+              </Toggle>
+            </TooltipTrigger>
+            <TooltipContent>Align Right</TooltipContent>
+          </Tooltip>
+
+          <div className="w-px h-6 mx-2 bg-accent-foreground/20" />
+          <div className="flex flex-wrap gap-1">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant={"ghost"}
+                  type="button"
+                  onClick={() => editor.chain().focus().undo().run()}
+                  disabled={!editor.can().undo()}
+                >
+                  <Undo />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Undo</TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="sm"
+                  variant={"ghost"}
+                  type="button"
+                  onClick={() => editor.chain().focus().undo().run()}
+                  disabled={!editor.can().redo()}
+                >
+                  <Redo />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Redo</TooltipContent>
+            </Tooltip>
+          </div>
         </div>
       </TooltipProvider>
     </div>

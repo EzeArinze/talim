@@ -79,7 +79,7 @@ export function NavBar() {
                       href={link.href}
                       className={`${
                         pathname === link.href
-                          ? "focus:bg-accent hover:bg-accent bg-accent/50 text-accent-foreground"
+                          ? "focus:bg-accent hover:bg-accent bg-accent/50 text-accent-foreground rounded-full"
                           : ""
                       }  py-1.5`}
                     >
