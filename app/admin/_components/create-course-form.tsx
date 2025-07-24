@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SelectField } from "../../../components/custom/select-field";
 import Editor from "@/components/rich-text-editor/Editor";
+import Uploader from "@/components/file-uploader/uploader";
 
 export function CreateCourseForm() {
   const form = useForm<courseZodType>({
@@ -152,11 +153,13 @@ export function CreateCourseForm() {
             <FormField
               control={form.control}
               name="file_key"
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Thumbnail image</FormLabel>
                   <FormControl>
-                    <Input placeholder="Thumbnail url" {...field} />
+                    <Uploader />
+                    {/* <Input placeholder="Thumbnail url" {...field} /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
