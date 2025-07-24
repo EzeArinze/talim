@@ -1,17 +1,56 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 import { rejectedFiles } from "@/helpers/rejected-file-error";
 import { FileEmptyState } from "./file-empty-state";
+import { nanoid } from "nanoid";
+import { toast } from "sonner";
 
 function Uploader() {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log(acceptedFiles);
-  }, []);
+  const [fileState, setFileState] = useState<UploaderProps>({
+    id: null,
+    file: null,
+    error: false,
+    isDeleting: false,
+    progress: 0,
+    uploading: false,
+    fileType: "image",
+  });
+
+  function uploadFile(file: File) {
+    setFileState((prev) => ({
+      ...prev,
+      uploading: true,
+      progress: 0,
+    }));
+
+    try {
+      console.log("Uploading file:", file.name);
+    } catch (error) {
+      toast.error("File upload failed", {
+        description: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  }
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+        setFileState({
+          ...fileState,
+          file,
+          id: nanoid(),
+          objectUrl: URL.createObjectURL(file),
+        });
+      }
+    },
+    [fileState]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
