@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
-import { CloudUploadIcon, ImageIcon } from "lucide-react";
+import { CloudUploadIcon, ImageIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export function FileEmptyState({ isDragActive }: { isDragActive: boolean }) {
   return (
@@ -26,7 +27,7 @@ export function FileEmptyState({ isDragActive }: { isDragActive: boolean }) {
   );
 }
 
-export function FileErrorState({}) {
+export function FileErrorState() {
   return (
     <div className="text-center">
       <div className="flex mx-auto items-center justify-center rounded-full bg-destructive/30 size-12 mb-6">
@@ -37,6 +38,45 @@ export function FileErrorState({}) {
       <Button type="button" className="mt-3">
         Retry File Upload
       </Button>
+    </div>
+  );
+}
+
+export function UploadedFileState({ previewUrl }: { previewUrl: string }) {
+  return (
+    <div className="">
+      <Image
+        src={previewUrl}
+        alt="Uploaded file image"
+        fill
+        className="object-contain p-2"
+      />
+      <Button
+        type="button"
+        variant={"destructive"}
+        size={"icon"}
+        className={cn("absolute top-4 right-4")}
+      >
+        <XIcon className="size-4" />
+      </Button>
+    </div>
+  );
+}
+
+export function ProgressFileState({
+  progress,
+  file,
+}: {
+  progress: number;
+  file: File;
+}) {
+  return (
+    <div className="text-center flex items-center justify-center flex-col">
+      {progress}%
+      <p className="mt-2 text-sm font-medium text-foreground">uploading...</p>
+      <p className="mt-1 text-sm text-muted-foreground truncate max-w-xs">
+        {file.name}
+      </p>
     </div>
   );
 }

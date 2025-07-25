@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Input } from "../ui/input";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "@/lib/utils";
 import { rejectedFiles } from "@/helpers/rejected-file-error";
-import { FileEmptyState } from "./file-empty-state";
+import {
+  FileEmptyState,
+  FileErrorState,
+  ProgressFileState,
+  UploadedFileState,
+} from "./file-state";
 import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import { S3Api } from "@/lib/axios-instance";
-import { AxiosError } from "axios";
 import axios from "axios";
 
 function Uploader() {
@@ -31,7 +35,7 @@ function Uploader() {
         contentType: file.type,
         fileName: file.name,
         size: file.size,
-        isImage: file.type.startsWith("image/") || true,
+        isImage: true,
       });
 
       if (presignedResponse.status !== 200) {
@@ -75,8 +79,7 @@ function Uploader() {
         key: fileKey,
       }));
       toast.success("File uploaded successfully");
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("An error occurred during file upload");
       setFileState((prev) => ({
         ...prev,
@@ -87,20 +90,53 @@ function Uploader() {
     }
   }
 
+  function renderFileState() {
+    if (fileState.uploading) {
+      return (
+        <ProgressFileState
+          progress={fileState.progress}
+          file={fileState.file as File}
+        />
+      );
+    }
+    if (fileState.error && !fileState.objectUrl) {
+      return <FileErrorState />;
+    }
+    if (fileState.objectUrl) {
+      return <UploadedFileState previewUrl={fileState.objectUrl} />;
+    }
+    return <FileEmptyState isDragActive={false} />;
+  }
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0];
+        //clean up previous object URL if it exists to prevent memory leaks
+        if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+          URL.revokeObjectURL(fileState.objectUrl);
+        }
+
         setFileState({
           ...fileState,
           file,
           id: nanoid(),
           objectUrl: URL.createObjectURL(file),
         });
+
+        uploadFile(file);
       }
     },
     [fileState]
   );
+
+  useEffect(() => {
+    return () => {
+      if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+    };
+  }, [fileState.objectUrl]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -115,7 +151,7 @@ function Uploader() {
     <Card
       {...getRootProps()}
       className={cn(
-        "relative border-2 border-dashed transition-colors duration-200 ease-in-out w-full ",
+        "relative border-2 border-dashed transition-colors duration-200 ease-in-out min-h-[250px] w-full ",
         isDragActive
           ? "border-primary bg-primary/10 border-solid"
           : "border-input hover:border-primary"
@@ -123,7 +159,7 @@ function Uploader() {
     >
       <CardContent className="flex items-center justify-center h-full w-full p-4">
         <Input placeholder="Thumbnail url" {...getInputProps()} />
-        <FileEmptyState isDragActive={isDragActive} />
+        {renderFileState()}
       </CardContent>
     </Card>
   );

@@ -2,7 +2,7 @@ interface UploaderProps {
   id: string | null;
   file: File | null;
   uploading?: boolean;
-  progress?: number;
+  progress: number;
   key?: string;
   isDeleting: boolean;
   error: boolean;

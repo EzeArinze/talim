@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const body = request.json();
+    const body = await request.json();
 
     const validation = S3fileUploadSchema.safeParse(body);
 
