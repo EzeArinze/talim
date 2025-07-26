@@ -13,7 +13,7 @@ export async function DELETE(request: Request) {
       fingerprint: session?.user.id as string,
     });
 
-    if (!decison.isDenied()) {
+    if (decison.isDenied()) {
       return NextResponse.json(
         { error: "Request blocked by security rules" },
         { status: 429 }

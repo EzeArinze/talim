@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       fingerprint: session?.user.id as string,
     });
 
-    if (!decison.isDenied()) {
+    if (decison.isDenied()) {
       return NextResponse.json(
         { error: "dude rate limit hit" },
         { status: 429 }
