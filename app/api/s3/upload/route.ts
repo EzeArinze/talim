@@ -1,3 +1,5 @@
+import { getServerSession } from "@/hooks/use-server-session";
+import { aj } from "@/lib/aj-rule";
 import { S3 } from "@/lib/S3-client";
 import { env } from "@/types/env";
 import { S3fileUploadSchema } from "@/utils/zod-shcemas/file-s3-upload-schema";
@@ -7,7 +9,20 @@ import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
+  const { session } = await getServerSession();
+
   try {
+    const decison = await aj.protect(request, {
+      fingerprint: session?.user.id as string,
+    });
+
+    if (!decison.isDenied()) {
+      return NextResponse.json(
+        { error: "dude rate limit hit" },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
 
     const validation = S3fileUploadSchema.safeParse(body);
