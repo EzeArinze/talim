@@ -153,13 +153,11 @@ export function CreateCourseForm() {
             <FormField
               control={form.control}
               name="file_key"
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Thumbnail image</FormLabel>
                   <FormControl>
-                    <Uploader />
-                    {/* <Input placeholder="Thumbnail url" {...field} /> */}
+                    <Uploader value={field.value} onChange={field.onChange} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

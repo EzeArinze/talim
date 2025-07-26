@@ -9,3 +9,8 @@ interface UploaderProps {
   objectUrl?: string;
   fileType: "image" | "video";
 }
+
+interface FileUploaderProps {
+  value?: string;
+  onChange?: (value: string) => void;
+}

@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { S3Api } from "@/lib/axios-instance";
 import axios from "axios";
 
-function Uploader() {
+function Uploader({ value, onChange }: FileUploaderProps) {
   const [fileState, setFileState] = useState<UploaderProps>({
     id: null,
     file: null,
@@ -26,6 +26,7 @@ function Uploader() {
     progress: 0,
     uploading: false,
     fileType: "image",
+    key: value,
   });
 
   async function uploadFile(file: File) {
@@ -51,7 +52,7 @@ function Uploader() {
 
       const { presignedUrl, fileKey } = presignedResponse.data;
 
-      toast.success("Presigned URL received, starting upload...");
+      toast.success("Starting upload...");
 
       // Step 2: Upload file directly to the presigned URL
       await axios.put(presignedUrl, file, {
@@ -78,6 +79,9 @@ function Uploader() {
         progress: 100,
         key: fileKey,
       }));
+
+      onChange?.(fileKey);
+
       toast.success("File uploaded successfully");
     } catch {
       toast.error("An error occurred during file upload");
@@ -85,6 +89,53 @@ function Uploader() {
         ...prev,
         uploading: false,
         progress: 0,
+        error: true,
+      }));
+    }
+  }
+
+  async function handleDeleteFile() {
+    if (fileState.isDeleting || !fileState.objectUrl) return;
+    try {
+      setFileState((prev) => ({
+        ...prev,
+        isDeleting: true,
+      }));
+      const response = await S3Api.delete("/delete", {
+        params: { file_key: fileState.key },
+      });
+
+      if (response.status !== 200) {
+        toast.error("Failed to delete file from storage");
+        setFileState((prev) => ({
+          ...prev,
+          isDeleting: false,
+          error: true,
+        }));
+        return;
+      }
+
+      if (fileState.objectUrl && !fileState.objectUrl.startsWith("http")) {
+        URL.revokeObjectURL(fileState.objectUrl);
+      }
+      onChange?.("");
+
+      setFileState({
+        id: null,
+        file: null,
+        error: false,
+        isDeleting: false,
+        progress: 0,
+        uploading: false,
+        fileType: "image",
+      });
+
+      toast.success("File deleted successfully");
+    } catch {
+      toast.error("An error occurred while deleting the file");
+      setFileState((prev) => ({
+        ...prev,
+        isDeleting: false,
         error: true,
       }));
     }
@@ -103,7 +154,13 @@ function Uploader() {
       return <FileErrorState />;
     }
     if (fileState.objectUrl) {
-      return <UploadedFileState previewUrl={fileState.objectUrl} />;
+      return (
+        <UploadedFileState
+          previewUrl={fileState.objectUrl}
+          isDeleting={fileState.isDeleting}
+          handleRemoveFile={handleDeleteFile}
+        />
+      );
     }
     return <FileEmptyState isDragActive={false} />;
   }
@@ -145,6 +202,7 @@ function Uploader() {
     multiple: false,
     maxSize: 5 * 1024 * 1024, //5mb
     onDropRejected: rejectedFiles,
+    disabled: fileState.uploading || !!fileState.objectUrl,
   });
 
   return (
