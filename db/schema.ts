@@ -114,11 +114,11 @@ export const courseTable = pgTable("courses", {
 
 // User has many courses
 export const userRelations = relations(user, ({ many }) => ({
-  snippets: many(courseTable),
+  courses: many(courseTable),
 }));
 
 // Courses belongs to one user
-export const snippetRelations = relations(courseTable, ({ one }) => ({
+export const courseRelations = relations(courseTable, ({ one }) => ({
   user: one(user, {
     fields: [courseTable.userId],
     references: [user.id],
