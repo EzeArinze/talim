@@ -1,5 +1,3 @@
-import "server-only";
-
 import { betterAuth } from "better-auth";
 import { magicLink } from "better-auth/plugins";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -7,6 +5,8 @@ import { db } from "@/db/db";
 import { nextCookies } from "better-auth/next-js";
 import * as schema from "../db/schema";
 import { resend } from "./resend";
+import { admin } from "better-auth/plugins";
+import { env } from "@/types/env";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -15,8 +15,8 @@ export const auth = betterAuth({
   }),
   socialProviders: {
     google: {
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     },
   },
   rateLimit: {
@@ -34,6 +34,7 @@ export const auth = betterAuth({
         });
       },
     }),
+    admin(),
     nextCookies(),
   ],
 });

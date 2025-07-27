@@ -1,4 +1,4 @@
-import { magicLinkClient } from "better-auth/client/plugins";
+import { adminClient, magicLinkClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import { toast } from "sonner";
 
@@ -12,7 +12,7 @@ export const authClient = createAuthClient({
       }
     },
   },
-  plugins: [magicLinkClient()],
+  plugins: [magicLinkClient(), adminClient()],
 });
 
 export const { signIn, signOut, signUp, useSession } = authClient;

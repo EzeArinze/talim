@@ -1,14 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
-import {
-  pgTable,
-  text,
-  timestamp,
-  boolean,
-  integer,
-  pgEnum,
-} from "drizzle-orm/pg-core";
-
-import { nanoid } from "nanoid";
+import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -74,59 +64,3 @@ export const verification = pgTable("verification", {
     () => /* @__PURE__ */ new Date()
   ),
 });
-
-export const courseLevelEnum = pgEnum("course_level", [
-  "beginner",
-  "intermediate",
-  "advanced",
-]);
-
-export const courseStatusEnum = pgEnum("course_status", [
-  "draft",
-  "published",
-  "archived",
-]);
-
-export const courseTable = pgTable("courses", {
-  id: text()
-    .primaryKey()
-    .$defaultFn(() => nanoid()),
-  name: text().notNull(),
-  description: text().notNull(),
-  small_description: text().notNull(),
-  price: integer().notNull(),
-  duration: integer().notNull(),
-  slug: text().notNull().unique(),
-  file_key: text().notNull(),
-  category: text().notNull(),
-  level: courseLevelEnum().notNull().default("beginner"),
-  status: courseStatusEnum().notNull().default("draft"),
-  userId: text()
-    .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  created_at: timestamp()
-    .$defaultFn(() => new Date())
-    .notNull(),
-  updated_at: timestamp()
-    .$defaultFn(() => new Date())
-    .notNull(),
-});
-
-// User has many courses
-export const userRelations = relations(user, ({ many }) => ({
-  snippets: many(courseTable),
-}));
-
-// Courses belongs to one user
-export const snippetRelations = relations(courseTable, ({ one }) => ({
-  user: one(user, {
-    fields: [courseTable.userId],
-    references: [user.id],
-  }),
-}));
-
-export type CourseType = InferModel<typeof courseTable>;
-
-export type NewCourse = InferModel<typeof courseTable, "insert">;
-
-export type UpdateCourse = Partial<NewCourse>;
