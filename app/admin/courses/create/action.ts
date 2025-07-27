@@ -1,18 +1,40 @@
 "use server";
 
+import { requireAdmin } from "@/app/data/admin/require-admin";
 import { db } from "@/db/db";
 import { courseTable } from "@/db/schema";
-import { getServerSession } from "@/hooks/use-server-session";
+import { aj } from "@/lib/aj-rule";
 import {
   courseFormSchema,
   courseZodType,
 } from "@/utils/zod-shcemas/create-course-schema";
+import { request } from "@arcjet/next";
 
 export async function createCourse(
   data: courseZodType
 ): Promise<ActionResponse> {
+  const session = await requireAdmin();
+
   try {
-    const { session } = await getServerSession();
+    const req = await request();
+
+    const decison = await aj.protect(req, {
+      fingerprint: session.user.id,
+    });
+
+    if (decison.isDenied()) {
+      if (decison.reason.isRateLimit()) {
+        return {
+          status: "error",
+          message: "You have exceeded the rate limit for creating courses.",
+        };
+      } else {
+        return {
+          status: "error",
+          message: "You are a bot, if mistaken contact support.",
+        };
+      }
+    }
 
     const validation = courseFormSchema.safeParse(data);
 

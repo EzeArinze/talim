@@ -1,4 +1,4 @@
-import { getServerSession } from "@/hooks/use-server-session";
+import { requireAdmin } from "@/app/data/admin/require-admin";
 import { aj } from "@/lib/aj-rule";
 import { S3 } from "@/lib/S3-client";
 import { env } from "@/types/env";
@@ -6,7 +6,7 @@ import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {
-  const { session } = await getServerSession();
+  const session = await requireAdmin();
 
   try {
     const decison = await aj.protect(request, {

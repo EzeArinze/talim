@@ -22,7 +22,7 @@ import { handleSignOut } from "@/hooks/use-session";
 
 interface profileProps {
   initials: string;
-  picture?: string;
+  picture: string;
   name?: string;
   email?: string;
 }
