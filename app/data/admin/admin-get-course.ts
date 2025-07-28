@@ -13,6 +13,7 @@ export async function adminGetCourse(courseId: string) {
       id: true,
       name: true,
       small_description: true,
+      description: true,
       slug: true,
       price: true,
       duration: true,

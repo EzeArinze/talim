@@ -16,8 +16,11 @@ import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import { S3Api } from "@/lib/axios-instance";
 import axios from "axios";
+import { constructUrl } from "@/helpers/construct-url";
 
 function Uploader({ value, onChange }: FileUploaderProps) {
+  const fileUrl = constructUrl(value || "");
+
   const [fileState, setFileState] = useState<UploaderProps>({
     id: null,
     file: null,
@@ -27,6 +30,7 @@ function Uploader({ value, onChange }: FileUploaderProps) {
     uploading: false,
     fileType: "image",
     key: value,
+    objectUrl: fileUrl,
   });
 
   async function uploadFile(file: File) {
