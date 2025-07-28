@@ -8,6 +8,8 @@ import {
   courseZodType,
 } from "@/utils/zod-shcemas/create-course-schema";
 import { and, eq } from "drizzle-orm";
+import { request } from "@arcjet/next";
+import { aj } from "@/lib/aj-rule";
 
 export async function editCourse(
   values: courseZodType,
@@ -15,6 +17,26 @@ export async function editCourse(
 ): Promise<ActionResponse> {
   const session = await requireAdmin();
   try {
+    const req = await request();
+
+    const decison = await aj.protect(req, {
+      fingerprint: session.user.id,
+    });
+
+    if (decison.isDenied()) {
+      if (decison.reason.isRateLimit()) {
+        return {
+          status: "error",
+          message: "You have exceeded the rate limit for updating courses.",
+        };
+      } else {
+        return {
+          status: "error",
+          message: "You are a bot, if mistaken contact support.",
+        };
+      }
+    }
+
     const validation = courseFormSchema.safeParse(values);
 
     if (!validation.success) {

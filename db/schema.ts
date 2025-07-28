@@ -112,21 +112,73 @@ export const courseTable = pgTable("courses", {
     .notNull(),
 });
 
+export const chaptersTable = pgTable("chapters", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  title: text().notNull(),
+  position: integer().notNull(),
+  courseId: text()
+    .notNull()
+    .references(() => courseTable.id, { onDelete: "cascade" }),
+  created_at: timestamp()
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updated_at: timestamp()
+    .$defaultFn(() => new Date())
+    .notNull(),
+});
+
+export const lessonsTable = pgTable("lessons", {
+  id: text()
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  title: text().notNull(),
+  description: text(),
+  thumbnail_key: text(),
+  video_key: text(),
+  chapterId: text()
+    .notNull()
+    .references(() => chaptersTable.id, { onDelete: "cascade" }),
+  created_at: timestamp()
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updated_at: timestamp()
+    .$defaultFn(() => new Date())
+    .notNull(),
+});
+
 // User has many courses
 export const userRelations = relations(user, ({ many }) => ({
   courses: many(courseTable),
 }));
 
 // Courses belongs to one user
-export const courseRelations = relations(courseTable, ({ one }) => ({
+export const courseRelations = relations(courseTable, ({ one, many }) => ({
   user: one(user, {
     fields: [courseTable.userId],
     references: [user.id],
   }),
+  chapters: many(chaptersTable),
+}));
+
+export const chaptersRelation = relations(chaptersTable, ({ one, many }) => ({
+  course: one(courseTable, {
+    fields: [chaptersTable.courseId], // foreign key in chaptersTable
+    references: [courseTable.id], // primary key in courseTable
+  }),
+  lessons: many(lessonsTable),
+}));
+
+export const lessonsRelation = relations(lessonsTable, ({ one }) => ({
+  chapter: one(chaptersTable, {
+    fields: [lessonsTable.chapterId],
+    references: [chaptersTable.id],
+  }),
 }));
 
 export type CourseType = InferModel<typeof courseTable>;
-
 export type NewCourse = InferModel<typeof courseTable, "insert">;
-
 export type UpdateCourse = Partial<NewCourse>;
+export type ChaptersType = InferModel<typeof chaptersTable>;
+export type LessonsType = InferModel<typeof lessonsTable>;

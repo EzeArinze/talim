@@ -1,3 +1,4 @@
+import { CourseStructure } from "@/app/admin/_components/course-structure";
 import { EditCourse } from "@/app/admin/_components/edit-course";
 import { adminGetCourse } from "@/app/data/admin/admin-get-course";
 import {
@@ -42,7 +43,17 @@ async function EditRoute({ params }: { params: Params }) {
           </Card>
         </TabsContent>
         <TabsContent value="course-structure">
-          Change your password here.
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Structure</CardTitle>
+              <CardDescription>
+                Here you can update your course structure
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CourseStructure />
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
