@@ -134,6 +134,7 @@ export const lessonsTable = pgTable("lessons", {
     .primaryKey()
     .$defaultFn(() => nanoid()),
   title: text().notNull(),
+  position: integer().notNull(),
   description: text(),
   thumbnail_key: text(),
   video_key: text(),

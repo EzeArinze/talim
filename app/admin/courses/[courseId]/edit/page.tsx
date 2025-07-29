@@ -25,9 +25,13 @@ async function EditRoute({ params }: { params: Params }) {
       </h1>
 
       <Tabs defaultValue="basic-info" className="w-full">
-        <TabsList className="grid grid-cols-2 w-full">
-          <TabsTrigger value="basic-info">Basic Info</TabsTrigger>
-          <TabsTrigger value="course-structure">Course Structure</TabsTrigger>
+        <TabsList className="grid grid-cols-2 w-full ">
+          <TabsTrigger value="basic-info" className="cursor-pointer">
+            Basic Info
+          </TabsTrigger>
+          <TabsTrigger value="course-structure" className="cursor-pointer">
+            Course Structure
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="basic-info">
           <Card>
@@ -51,7 +55,7 @@ async function EditRoute({ params }: { params: Params }) {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CourseStructure />
+              <CourseStructure course={course} />
             </CardContent>
           </Card>
         </TabsContent>
