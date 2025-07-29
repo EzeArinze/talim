@@ -19,7 +19,7 @@ import axios from "axios";
 import { constructUrl } from "@/helpers/construct-url";
 
 function Uploader({ value, onChange }: FileUploaderProps) {
-  const fileUrl = constructUrl(value || "");
+  const fileUrl = value ? constructUrl(value) : "";
 
   const [fileState, setFileState] = useState<UploaderProps>({
     id: null,
@@ -34,6 +34,12 @@ function Uploader({ value, onChange }: FileUploaderProps) {
   });
 
   async function uploadFile(file: File) {
+    setFileState((prev) => ({
+      ...prev,
+      uploading: true,
+      progress: 0,
+    }));
+
     try {
       // Step 1: Request a presigned URL from your backend
       const presignedResponse = await S3Api.post("/upload", {
@@ -56,27 +62,24 @@ function Uploader({ value, onChange }: FileUploaderProps) {
 
       const { presignedUrl, fileKey } = presignedResponse.data;
 
-      toast.success("Starting upload...");
-
-      // Step 2: Upload file directly to the presigned URL
+      // Step 2: Upload directly to S3
       await axios.put(presignedUrl, file, {
         headers: {
           "Content-Type": file.type,
         },
-        onUploadProgress: (event) => {
-          if (!event.lengthComputable) return;
-          const percentCompleted = event.total
-            ? Math.round((event.loaded * 100) / event.total)
-            : 0;
-
-          setFileState((prev) => ({
-            ...prev,
-            progress: percentCompleted,
-          }));
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total && progressEvent.lengthComputable) {
+            const percentage =
+              (progressEvent.loaded / progressEvent.total) * 100;
+            setFileState((prev) => ({
+              ...prev,
+              progress: Math.round(percentage),
+            }));
+          }
         },
       });
 
-      // Success
+      // After successful upload
       setFileState((prev) => ({
         ...prev,
         uploading: false,
@@ -84,9 +87,8 @@ function Uploader({ value, onChange }: FileUploaderProps) {
         key: fileKey,
       }));
 
-      onChange?.(fileKey);
-
       toast.success("File uploaded successfully");
+      onChange?.(fileKey);
     } catch {
       toast.error("An error occurred during file upload");
       setFileState((prev) => ({
@@ -154,7 +156,7 @@ function Uploader({ value, onChange }: FileUploaderProps) {
         />
       );
     }
-    if (fileState.error && !fileState.objectUrl) {
+    if (fileState.error) {
       return <FileErrorState />;
     }
     if (fileState.objectUrl) {
@@ -179,7 +181,11 @@ function Uploader({ value, onChange }: FileUploaderProps) {
         }
 
         setFileState({
-          ...fileState,
+          progress: 0,
+          uploading: false,
+          error: false,
+          isDeleting: false,
+          fileType: "image",
           file,
           id: nanoid(),
           objectUrl: URL.createObjectURL(file),
@@ -188,7 +194,8 @@ function Uploader({ value, onChange }: FileUploaderProps) {
         uploadFile(file);
       }
     },
-    [fileState]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fileState.objectUrl]
   );
 
   useEffect(() => {

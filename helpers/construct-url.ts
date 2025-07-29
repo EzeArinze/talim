@@ -3,4 +3,8 @@ export function constructUrl(key: string): string {
   return `${baseUrl}${key}`;
 }
 
-// https://talim.fly.storage.tigris.dev/
+// export function constructUrl(key: string): string {
+//   if (!key || !key.trim()) return "";
+//   const baseUrl = "https://talim.fly.storage.tigris.dev/";
+//   return `${baseUrl}${key}`;
+// }
