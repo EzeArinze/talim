@@ -27,7 +27,7 @@ export default function RootLayout({
         >
           <main className="mx-auto">{children}</main>
         </ThemeProvider>
-        <Toaster />
+        <Toaster closeButton position="bottom-center" />
       </body>
     </html>
   );
