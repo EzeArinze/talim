@@ -7,10 +7,14 @@ import {
   courseFormSchema,
   courseZodType,
 } from "@/utils/zod-shcemas/create-course-schema";
-import { and, eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { request } from "@arcjet/next";
 import { aj } from "@/lib/aj-rule";
 import { revalidatePath } from "next/cache";
+import {
+  chapterSchema,
+  chapterZodType,
+} from "@/utils/zod-shcemas/create-chapter-schema";
 
 export async function editCourse(
   values: courseZodType,
@@ -185,6 +189,57 @@ export async function reorderChapter(
     return {
       status: "error",
       message: "Failed to reorder chapter",
+    };
+  }
+}
+
+export async function createChapter(
+  values: chapterZodType
+): Promise<ActionResponse> {
+  await requireAdmin();
+
+  try {
+    const result = chapterSchema.safeParse(values);
+
+    if (!result.success) {
+      return {
+        status: "error",
+        message: "Invalid form values/data",
+      };
+    }
+
+    await db.transaction(async (tx) => {
+      // const maxPositionRow = await tx.query.chaptersTable.findFirst({
+      //   where: eq(chaptersTable.courseId, result.data.courseId),
+      //   orderBy: (chapter, { desc }) => [desc(chapter.position)],
+      //   columns: { position: true },
+      // });
+
+      // const nextPosition = (maxPositionRow?.position ?? 0) + 1;
+
+      await tx.insert(chaptersTable).values({
+        title: result.data.name,
+        courseId: result.data.courseId,
+        position: sql`
+         COALESCE(
+            (SELECT MAX(position) FROM ${chaptersTable}
+            WHERE ${chaptersTable.courseId} = ${result.data.courseId}),
+            0
+              ) + 1
+              `,
+      });
+    });
+
+    revalidatePath(`/admin/courses/${result.data.courseId}/edit`);
+
+    return {
+      status: "success",
+      message: "Chapter created successfully",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to create chapter",
     };
   }
 }

@@ -41,9 +41,7 @@ export async function createCourse(
     if (!validation.success) {
       return {
         status: "error",
-        message:
-          (validation.error.flatten().fieldErrors as string) ||
-          "Invalid Form Data",
+        message: "Invalid Form Data",
       };
     }
 

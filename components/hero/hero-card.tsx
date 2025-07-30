@@ -26,7 +26,7 @@ const heroCard = [
 
 function HeroCard() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 mb-4 pt-8 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4 mb-4 pt-8 w-full">
       {heroCard.map((card, index) => (
         <Card
           key={index}
