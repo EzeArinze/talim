@@ -375,3 +375,74 @@ export async function deleteLesson({
     };
   }
 }
+
+export async function deleteChapter({
+  courseId,
+  chapterId,
+}: {
+  courseId: string;
+  chapterId: string;
+}): Promise<ActionResponse> {
+  await requireAdmin();
+  try {
+    const courseWithChapters = await db.query.courseTable.findFirst({
+      where: eq(chaptersTable.id, chapterId),
+      columns: {},
+      with: {
+        chapters: {
+          columns: {
+            id: true,
+            position: true,
+          },
+          orderBy: (chapters, { asc }) => [asc(chapters.position)],
+        },
+      },
+    });
+
+    if (!courseWithChapters) {
+      return {
+        status: "error",
+        message: "Course not found",
+      };
+    }
+
+    const chapters = courseWithChapters.chapters;
+    const chapterToDelete = chapters.find(
+      (chapter) => chapter.id === chapterId
+    );
+
+    if (!chapterToDelete) {
+      return {
+        status: "error",
+        message: "Chapter not found in the course",
+      };
+    }
+
+    const remainingChapters = chapters.filter(
+      (chapter) => chapter.id !== chapterId
+    );
+
+    await db.transaction(async (tx) => {
+      await Promise.all(
+        remainingChapters.map((chapter, index) =>
+          tx
+            .update(chaptersTable)
+            .set({ position: index + 1 })
+            .where(eq(chaptersTable.id, chapter.id))
+        )
+      );
+      await tx.delete(chaptersTable).where(eq(chaptersTable.id, chapterId));
+    });
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+    return {
+      status: "success",
+      message: "Chapter deleted successfully",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to delete chapter",
+    };
+  }
+}
