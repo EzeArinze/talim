@@ -41,6 +41,7 @@ import {
 } from "../courses/[courseId]/edit/actions";
 import NewChapterModal from "./new-chapter-modal";
 import NewLessonModal from "./new-lesson-modal";
+import DeleteLesson from "./delete-lesson";
 
 interface iAppProps {
   course: adminGetCourseType;
@@ -338,9 +339,11 @@ export function CourseStructure({ course }: iAppProps) {
                                       </Link>
                                     </div>
 
-                                    <Button size={"icon"} variant={"outline"}>
-                                      <Trash2 className="size-4" />
-                                    </Button>
+                                    <DeleteLesson
+                                      courseId={course.id}
+                                      lessonId={lesson.id}
+                                      chapterId={item.id}
+                                    />
                                   </div>
                                 )}
                               </SortableItem>

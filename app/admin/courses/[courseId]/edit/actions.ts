@@ -299,3 +299,79 @@ export async function createLesson(
     };
   }
 }
+
+export async function deleteLesson({
+  lessonId,
+  courseId,
+  chapterId,
+}: {
+  lessonId: string;
+  courseId: string;
+  chapterId: string;
+}): Promise<ActionResponse> {
+  await requireAdmin();
+  try {
+    const chapterWithLessons = await db.query.chaptersTable.findFirst({
+      where: eq(chaptersTable.id, chapterId),
+      columns: {},
+      with: {
+        lessons: {
+          columns: {
+            id: true,
+            position: true,
+          },
+          orderBy: (lessons, { asc }) => [asc(lessons.position)],
+        },
+      },
+    });
+
+    if (!chapterWithLessons) {
+      return {
+        status: "error",
+        message: "Chapter not found",
+      };
+    }
+
+    const lessons = chapterWithLessons.lessons;
+    const lessonToDelete = lessons.find((lesson) => lesson.id === lessonId);
+
+    if (!lessonToDelete) {
+      return {
+        status: "error",
+        message: "Lesson not found",
+      };
+    }
+
+    const remainingLessons = lessons.filter((lesson) => lesson.id !== lessonId);
+
+    await db.transaction(async (tx) => {
+      await Promise.all(
+        remainingLessons.map((lesson, index) =>
+          tx
+            .update(lessonsTable)
+            .set({ position: index + 1 })
+            .where(eq(lessonsTable.id, lesson.id))
+        )
+      );
+      await tx
+        .delete(lessonsTable)
+        .where(
+          and(
+            eq(lessonsTable.id, lessonId),
+            eq(lessonsTable.chapterId, chapterId)
+          )
+        );
+    });
+
+    revalidatePath(`/admin/courses/${courseId}/edit`);
+    return {
+      status: "success",
+      message: "Lesson deleted successfully",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to delete lesson",
+    };
+  }
+}
