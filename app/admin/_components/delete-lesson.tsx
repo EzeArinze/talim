@@ -1,6 +1,5 @@
 import {
   AlertDialog,
-  // AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -39,7 +38,7 @@ function DeleteLesson({
       }
       if (result.status === "success") {
         toast.success(result.message);
-        setOpen(false);
+        setOpen((prev) => !prev);
       } else if (result.status === "error") {
         toast.error(result.message);
       }
@@ -63,7 +62,6 @@ function DeleteLesson({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          {/* <AlertDialogAction>Continue</AlertDialogAction> */}
           <Button disabled={pending} onClick={handleDeleteLesson}>
             {pending ? "Deleting..." : "Delete"}
           </Button>
