@@ -40,6 +40,7 @@ import {
   reorderLesson,
 } from "../courses/[courseId]/edit/actions";
 import NewChapterModal from "./new-chapter-modal";
+import NewLessonModal from "./new-lesson-modal";
 
 interface iAppProps {
   course: adminGetCourseType;
@@ -347,13 +348,10 @@ export function CourseStructure({ course }: iAppProps) {
                           </SortableContext>
 
                           <div className="p-2">
-                            <Button
-                              size={"icon"}
-                              variant={"outline"}
-                              className="w-full"
-                            >
-                              Create New Lesson
-                            </Button>
+                            <NewLessonModal
+                              courseId={course.id}
+                              chapterId={item.id}
+                            />
                           </div>
                         </div>
                       </CollapsibleContent>

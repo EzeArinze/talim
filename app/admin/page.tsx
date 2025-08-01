@@ -1,8 +1,8 @@
 import { ChartAreaInteractive } from "@/components/admin-dashboard/chart-area-interactive";
-import { DataTable } from "@/components/admin-dashboard/data-table";
+// import { DataTable } from "@/components/admin-dashboard/data-table";
 import { SectionCards } from "@/components/admin-dashboard/section-cards";
 
-import data from "./data.json";
+// import data from "./data.json";
 
 export default function Page() {
   return (
@@ -11,7 +11,7 @@ export default function Page() {
       <div className="px-4 lg:px-6">
         <ChartAreaInteractive />
       </div>
-      <DataTable data={data} />
+      {/* <DataTable data={data} /> */}
     </>
   );
 }

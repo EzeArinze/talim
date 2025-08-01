@@ -19,31 +19,38 @@ import {
 import { Input } from "@/components/ui/input";
 import { tryCatch } from "@/hooks/try-catch";
 import {
-  chapterZodType,
-  chapterSchema,
+  lessonZodType,
+  lessonSchema,
 } from "@/utils/zod-shcemas/create-chapter-and-lesson-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus } from "lucide-react";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { createChapter } from "../courses/[courseId]/edit/actions";
+import { createLesson } from "../courses/[courseId]/edit/actions";
 import { toast } from "sonner";
 
-function NewChapterModal({ courseId }: { courseId: string }) {
+function NewLessonModal({
+  courseId,
+  chapterId,
+}: {
+  courseId: string;
+  chapterId: string;
+}) {
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
 
-  const form = useForm<chapterZodType>({
-    resolver: zodResolver(chapterSchema),
+  const form = useForm<lessonZodType>({
+    resolver: zodResolver(lessonSchema),
     defaultValues: {
       name: "",
       courseId: courseId,
+      chapterId: chapterId,
     },
   });
 
-  async function onSubmit(values: chapterZodType) {
+  async function onSubmit(values: lessonZodType) {
     startTransition(async () => {
-      const { data: result, error } = await tryCatch(createChapter(values));
+      const { data: result, error } = await tryCatch(createLesson(values));
       if (error) {
         toast.error("An unexpected error occured during chapter creation");
         return;
@@ -65,15 +72,15 @@ function NewChapterModal({ courseId }: { courseId: string }) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" size={"sm"} className="gap-2">
-          <Plus className="size-4" /> New Chapter
+        <Button variant="outline" className="w-full justify-center gap-1">
+          <Plus className="size-4" /> New Lesson
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create new chapter</DialogTitle>
+          <DialogTitle>Create new lesson</DialogTitle>
           <DialogDescription>
-            What would you like to name your chapter
+            What would you like to name your lesson ?
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -85,7 +92,7 @@ function NewChapterModal({ courseId }: { courseId: string }) {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Chapter name" {...field} />
+                    <Input placeholder="Lesson name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,4 +111,4 @@ function NewChapterModal({ courseId }: { courseId: string }) {
   );
 }
 
-export default NewChapterModal;
+export default NewLessonModal;

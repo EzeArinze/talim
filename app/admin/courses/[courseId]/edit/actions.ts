@@ -14,7 +14,9 @@ import { revalidatePath } from "next/cache";
 import {
   chapterSchema,
   chapterZodType,
-} from "@/utils/zod-shcemas/create-chapter-schema";
+  lessonSchema,
+  lessonZodType,
+} from "@/utils/zod-shcemas/create-chapter-and-lesson-schema";
 
 export async function editCourse(
   values: courseZodType,
@@ -240,6 +242,60 @@ export async function createChapter(
     return {
       status: "error",
       message: "Failed to create chapter",
+    };
+  }
+}
+
+export async function createLesson(
+  values: lessonZodType
+): Promise<ActionResponse> {
+  await requireAdmin();
+
+  try {
+    const result = lessonSchema.safeParse(values);
+
+    if (!result.success) {
+      return {
+        status: "error",
+        message: "Invalid form values/data",
+      };
+    }
+
+    await db.transaction(async (tx) => {
+      // const maxPositionRow = await tx.query.chaptersTable.findFirst({
+      //   where: eq(chaptersTable.courseId, result.data.courseId),
+      //   orderBy: (chapter, { desc }) => [desc(chapter.position)],
+      //   columns: { position: true },
+      // });
+
+      // const nextPosition = (maxPositionRow?.position ?? 0) + 1;
+
+      await tx.insert(lessonsTable).values({
+        title: result.data.name,
+        chapterId: result.data.chapterId,
+        description: result.data.description,
+        thumbnail_key: result.data.thumbnail_key,
+        video_key: result.data.video_key,
+        position: sql`
+         COALESCE(
+            (SELECT MAX(position) FROM ${chaptersTable}
+            WHERE ${chaptersTable.courseId} = ${result.data.courseId}),
+            0
+              ) + 1
+              `,
+      });
+    });
+
+    revalidatePath(`/admin/courses/${result.data.courseId}/edit`);
+
+    return {
+      status: "success",
+      message: "Lesson created successfully",
+    };
+  } catch {
+    return {
+      status: "error",
+      message: "Failed to create lesson",
     };
   }
 }
